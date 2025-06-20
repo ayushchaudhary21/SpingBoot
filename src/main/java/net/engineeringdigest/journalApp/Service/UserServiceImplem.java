@@ -6,9 +6,12 @@ import net.engineeringdigest.journalApp.Entity.User;
 import net.engineeringdigest.journalApp.Respository.UserRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,14 +20,17 @@ public class UserServiceImplem implements  UserService{
     
     @Autowired
     private UserRepository userRepository;
-
-
+    private static final PasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
 
     @Override
-    public User saveAllUser(User user){
-          return userRepository.save(user);
+    public void saveAllUser(User user){
+
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRoles(Arrays.asList("User"));
+        userRepository.save(user);
+
     }
-    
+
     @Override
     public List<User> getAllUser()
     {
@@ -43,8 +49,8 @@ public class UserServiceImplem implements  UserService{
 
 
     @Override
-    public void deleteId(ObjectId id) {
-        userRepository.deleteById(id);
+    public void deletebyUserName(String userName) {
+        userRepository.deleteByUserName(userName);
     }
 
     @Override
@@ -55,11 +61,15 @@ public class UserServiceImplem implements  UserService{
               User user1=userDb.get();
               if(user.getPassword()!=null)
               {
-                  user1.setPassword(user.getPassword());
+                  user1.setPassword(passwordEncoder.encode(user.getPassword()));
               }
               if(user.getJournalEntityList()!=null)
               {
                   user1.setJournalEntityList(user.getJournalEntityList());
+              }
+              if(user.getUserName()!=null)
+              {
+                  user1.setUserName(user.getUserName());
               }
               return userRepository.save(user1);
           }
