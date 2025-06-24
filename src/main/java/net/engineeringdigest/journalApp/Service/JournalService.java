@@ -10,8 +10,8 @@ import java.util.List;
 public interface JournalService {
     JournalEntity saveAllJournal(JournalEntity journalEntity,String userName);
     List<JournalEntity> getAllJournal(String userName);
-    JournalEntity getByID(ObjectId id);
+    JournalEntity getByID(ObjectId id,String userName);
     JournalEntity getbyTitle(String title);
     void deleteId(ObjectId id,String userName);
-     JournalEntity updateJournalBody(ObjectId id,JournalEntity journalEntity);
+     JournalEntity updateJournalBody(ObjectId id,JournalEntity journalEntity ,String userName);
 }
