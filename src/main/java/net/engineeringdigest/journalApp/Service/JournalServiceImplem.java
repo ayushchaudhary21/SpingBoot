@@ -64,35 +64,39 @@ public class JournalServiceImplem implements  JournalService{
     }
 
     @Override
-    public JournalEntity getByID(ObjectId id) {
-        return journalRepository.findById(id).orElse(null);
+    public JournalEntity getByID(ObjectId id,String userName) {
+        Optional<User> user=userRepository.findByUserName(userName);
+        if(user.isPresent())
+        {
+            return journalRepository.findById(id).orElse(null);
+        }
+        return null;
+//
     }
 
     @Override
-    public JournalEntity updateJournalBody(ObjectId id, JournalEntity journalEntity) {
-        Optional<JournalEntity> optionalJournalEntity = journalRepository.findById(id);
-        if(optionalJournalEntity.isPresent())
-        {
-             JournalEntity journalEntity2=optionalJournalEntity.get();
-             // for the content checkk...
-             if(journalEntity.getContent() != null) {
-                 journalEntity2.setContent(journalEntity.getContent());
-             }
-            // for the set the Title
-             if(journalEntity.getTitle()!=null)
-             {
-                  journalEntity2.setTitle(journalEntity.getTitle());
-             }
-             // for the update of the date
-             if(journalEntity.getDate()!=null)
-             {
-                   journalEntity2.setDate(journalEntity.getDate());
-             }
-             return journalRepository.save(journalEntity2);
+    public JournalEntity updateJournalBody(ObjectId id, JournalEntity journalEntity,String userName) {
+        Optional<User> user=userRepository.findByUserName(userName);
+        if(user.isPresent()) {
+            Optional<JournalEntity> optionalJournalEntity = journalRepository.findById(id);
+            if (optionalJournalEntity.isPresent()) {
+                JournalEntity journalEntity2 = optionalJournalEntity.get();
+                // for the content checkk...
+                if (journalEntity.getContent() != null) {
+                    journalEntity2.setContent(journalEntity.getContent());
+                }
+                // for the set the Title
+                if (journalEntity.getTitle() != null) {
+                    journalEntity2.setTitle(journalEntity.getTitle());
+                }
+                // for the update of the date
+                if (journalEntity.getDate() != null) {
+                    journalEntity2.setDate(journalEntity.getDate());
+                }
+                return journalRepository.save(journalEntity2);
+            }
         }
-        else{
-            return journalRepository.save(journalEntity);
-        }
+       return null;
     }
 
     @Override
