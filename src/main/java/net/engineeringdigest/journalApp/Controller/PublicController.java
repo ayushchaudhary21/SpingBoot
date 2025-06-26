@@ -22,4 +22,8 @@ public class PublicController {
         userService.saveAllUser(user);
         return ResponseEntity.ok("user created");
     }
+    public void createAdmin(@RequestBody User user)
+    {
+         userService.saveAdmin(user);
+    }
 }

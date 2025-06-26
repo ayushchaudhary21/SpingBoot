@@ -32,6 +32,13 @@ public class UserServiceImplem implements  UserService{
     }
 
     @Override
+    public void saveAdmin(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRoles(Arrays.asList("User","Admin"));
+        userRepository.save(user);
+    }
+
+    @Override
     public List<User> getAllUser()
     {
          return userRepository.findAll();

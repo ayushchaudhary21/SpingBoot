@@ -10,6 +10,7 @@ import java.util.Optional;
 @Service
 public interface UserService {
     void saveAllUser(User user);
+    void saveAdmin(User user);
     List<User> getAllUser();
     User getByID(ObjectId id);
     Optional<User> getbyName(String userName);
